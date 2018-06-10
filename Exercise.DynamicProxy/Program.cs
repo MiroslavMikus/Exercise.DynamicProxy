@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Castle.DynamicProxy.Generators;
 
 namespace Exercise.DynamicProxy
 {
@@ -10,8 +10,15 @@ namespace Exercise.DynamicProxy
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            Person p = Freezable.MakeFreezable<Person>();
+            p.FirstName = "Foo";
+            p.LastName = "Bar";
+            Console.WriteLine(p);
+            Freezable.Freeze(p);
+            p.FirstName = "what";
+            Console.WriteLine(p);
         }
     }
+
+
 }
