@@ -5,13 +5,6 @@ namespace Exercise.DynamicProxy
 {
     public class FreezableInterceptor : IInterceptor, IFreezable
     {
-        private FreezableInterceptor(){}
-
-        public static FreezableInterceptor Create()
-        {
-            return new FreezableInterceptor();
-        }
-
         public bool IsFrozen { get; private set; }
 
         public void Freeze() => IsFrozen = true;
@@ -25,6 +18,4 @@ namespace Exercise.DynamicProxy
             invocation.Proceed();
         }
     }
-
-
 }

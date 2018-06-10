@@ -7,12 +7,11 @@ namespace Exercise.DynamicProxy
 {
     public class ProxyHelper
     {
-        private const string FieldName = "__interceptors";
-        private static FieldInfo GetInfo(object obj, string fieldName) => obj.GetType().GetField(fieldName);
+        public const string FieldName = "__interceptors";
+        public static FieldInfo GetInfo(object obj, string fieldName) => obj.GetType().GetField(fieldName);
+        public static IInterceptor[] GetInterceptorsField(object service) => GetInfo(service, FieldName).GetValue(service) as IInterceptor[];
 
-        private IInterceptor[] GetInterceptorsField(object service) => GetInfo(service, FieldName).GetValue(service) as IInterceptor[];
-
-        private void ExcudeInterceptors(object service, params Type[] interceptorTypes2exclude)
+        public static void ExcudeInterceptors(object service, params Type[] interceptorTypes2exclude)
         {
             var fieldVal = GetInterceptorsField(service);
 
@@ -21,11 +20,14 @@ namespace Exercise.DynamicProxy
             GetInfo(service, FieldName).SetValue(service, newInterceptors);
         }
 
-        private void AddInterceptor<T>(object service, T interceptorType2add, int position) where T : IInterceptor, new()
+        public static void AddInterceptor<T>(object service, T interceptorType2add, int position = -1) where T : IInterceptor, new()
         {
             var newInterceptors = GetInterceptorsField(service).ToList();
 
-            newInterceptors.Insert(position, new T());
+            if (position == -1)
+                newInterceptors.Add(new T());
+            else
+                newInterceptors.Insert(position, new T());
 
             GetInfo(service, FieldName).SetValue(service, newInterceptors.ToArray());
         }
