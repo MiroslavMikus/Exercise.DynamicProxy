@@ -10,7 +10,7 @@ namespace Exercise.DynamicProxy
         public static readonly IDictionary<object, IFreezable> _freezables = new Dictionary<object, IFreezable>();
 
         private static readonly ProxyGenerator _generator = new ProxyGenerator();
-
+                
         public static bool IsFreezable(object obj) => obj != null && _freezables.ContainsKey(obj);
 
         public static void Freeze(object freezable)
