@@ -9,10 +9,7 @@ namespace Exercise.DynamicProxy
 
         private static readonly ProxyGenerator _generator = new ProxyGenerator();
 
-        public static bool IsFreezable(object obj)
-        {
-            return obj != null && _freezables.ContainsKey(obj);
-        }
+        public static bool IsFreezable(object obj) => obj != null && _freezables.ContainsKey(obj);
 
         public static void Freeze(object freezable)
         {
@@ -23,10 +20,7 @@ namespace Exercise.DynamicProxy
             _freezables[freezable].Freeze();
         }
 
-        public static bool IsFrozen(object freezable)
-        {
-            return IsFreezable(freezable) && _freezables[freezable].IsFrozen;
-        }
+        public static bool IsFrozen(object freezable) => IsFreezable(freezable) && _freezables[freezable].IsFrozen;
 
         public static T MakeFreezable<T>() where T : class, new()
         {
@@ -36,6 +30,4 @@ namespace Exercise.DynamicProxy
             return proxy;
         }
     }
-
-
 }

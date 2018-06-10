@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Castle.DynamicProxy.Generators;
@@ -10,15 +9,18 @@ namespace Exercise.DynamicProxy
     {
         static void Main(string[] args)
         {
-            Person p = Freezable.MakeFreezable<Person>();
-            p.FirstName = "Foo";
-            p.LastName = "Bar";
-            Console.WriteLine(p);
-            Freezable.Freeze(p);
-            p.FirstName = "what";
-            Console.WriteLine(p);
+            Person per = Freezable.MakeFreezable<Person>();
+            per.FirstName = "Foo";
+            per.LastName = "Bar";
+
+            Console.WriteLine(per);
+
+            Freezable.Freeze(per);
+
+            // since this person is 'Frozen' this will fail
+            per.FirstName = "what";
+
+            Console.WriteLine(per);
         }
     }
-
-
 }
