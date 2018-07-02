@@ -21,6 +21,8 @@ namespace Exercise.DynamicProxy
             per.FirstName = "what";
 
             Console.WriteLine(per);
+
+            Console.ReadLine();
         }
     }
 }

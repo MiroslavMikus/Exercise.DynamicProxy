@@ -20,6 +20,15 @@ namespace Exercise.DynamicProxy
             GetInfo(service, FieldName).SetValue(service, newInterceptors);
         }
 
+        public static void ExcudeInterceptors(object service, params IInterceptor[] interceptorTypes2exclude)
+        {
+            var fieldVal = GetInterceptorsField(service);
+
+            var newInterceptors = fieldVal.Except(interceptorTypes2exclude);
+
+            GetInfo(service, FieldName).SetValue(service, newInterceptors.ToArray());
+        }
+
         public static void AddInterceptor<T>(object service, int position = -1) where T : IInterceptor, new()
         {
             AddInterceptor(service, new T(), position);

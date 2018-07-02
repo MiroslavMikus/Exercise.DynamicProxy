@@ -96,5 +96,72 @@ namespace Exercise.DynamicProxy.Test
 
             Assert.AreEqual(0, ProxyHelper.GetInterceptorsField(per).Count());
         }
+
+        [TestMethod]
+        public void AddCountInterceptorAtRuntime_Test()
+        {
+            Person per = new ProxyGenerator().CreateClassProxy<Person>();
+            per.FirstName = "Foo";
+            per.LastName = "Bar";
+
+            var counter = new CounterInterceptor();
+
+            ProxyHelper.AddInterceptor(per, counter);
+
+            Assert.AreEqual(1, ProxyHelper.GetInterceptorsField(per).Count());
+
+            Assert.AreEqual(per.FirstName, "Foo");
+            Assert.AreEqual(per.LastName, "Bar");
+
+            Assert.AreEqual(2, counter.CallsCount);
+        }
+
+        [TestMethod]
+        public void RemoveCountInterceptorAtRuntime_Test()
+        {
+            var counter = new CounterInterceptor();
+
+            Person per = new ProxyGenerator().CreateClassProxy<Person>(counter);
+            per.FirstName = "Foo";
+            per.LastName = "Bar";
+
+            Assert.AreEqual(1, ProxyHelper.GetInterceptorsField(per).Count());
+
+            Assert.AreEqual(per.FirstName, "Foo");
+
+            ProxyHelper.ExcudeInterceptors(per, typeof(CounterInterceptor));
+
+            Assert.AreEqual(3, counter.CallsCount);
+
+            Assert.AreEqual(per.LastName, "Bar");
+
+            Assert.AreEqual(3, counter.CallsCount);
+
+            Assert.AreEqual(0, ProxyHelper.GetInterceptorsField(per).Count());
+        }
+
+        [TestMethod]
+        public void RemoveCountInterceptorAtRuntime_byInstance_Test()
+        {
+            var counter = new CounterInterceptor();
+
+            Person per = new ProxyGenerator().CreateClassProxy<Person>(counter);
+            per.FirstName = "Foo";
+            per.LastName = "Bar";
+
+            Assert.AreEqual(1, ProxyHelper.GetInterceptorsField(per).Count());
+
+            Assert.AreEqual(per.FirstName, "Foo");
+
+            ProxyHelper.ExcudeInterceptors(per, counter);
+
+            Assert.AreEqual(3, counter.CallsCount);
+
+            Assert.AreEqual(per.LastName, "Bar");
+
+            Assert.AreEqual(3, counter.CallsCount);
+
+            Assert.AreEqual(0, ProxyHelper.GetInterceptorsField(per).Count());
+        }
     }
 }

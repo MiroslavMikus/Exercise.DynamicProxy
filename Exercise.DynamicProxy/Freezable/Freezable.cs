@@ -28,7 +28,7 @@ namespace Exercise.DynamicProxy
         {
             var interceptor = new FreezableInterceptor();
 
-            var proxy = _generator.CreateClassProxy<T>(new CallLoggingInterceptor(), new FreezableInterceptor());
+            var proxy = _generator.CreateClassProxy<T>(new CallLoggingInterceptor(), interceptor);
 
             _freezables.Add(proxy, interceptor);
 
