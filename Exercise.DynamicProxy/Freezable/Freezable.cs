@@ -53,7 +53,6 @@ namespace Exercise.DynamicProxy
                 }
             }
             return false;
-
         }
     }
 }

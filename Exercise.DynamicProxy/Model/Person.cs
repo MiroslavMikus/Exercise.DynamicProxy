@@ -6,6 +6,4 @@
         public virtual string LastName { get; set; }
         public override string ToString() => $"{FirstName} {LastName}";
     }
-
-
 }
